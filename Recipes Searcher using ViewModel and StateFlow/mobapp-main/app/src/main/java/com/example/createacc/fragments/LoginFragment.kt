@@ -37,7 +37,7 @@ class LoginFragment(private val credentialsManager: CredentialsManager) : Fragme
                 if (validateCredentials(email, password, emailInputLayout, passwordInputLayout)) {
                     if (credentialsManager.validateCredentials(email, password)) {
                         Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
-                        (activity as? MainActivity)?.showFragment(FragmentA())
+                        (activity as? MainActivity)?.showFragment(RecipeFragment())
                     } else {
                         showError("Invalid email or password. Please try again.")
                     }

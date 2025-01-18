@@ -11,7 +11,7 @@ import com.example.createacc.R
 import com.example.createacc.models.Recipe
 
 class RecipeAdapter(
-    private val recipes: List<Recipe>,
+    private var recipes: List<Recipe>,
     private val onItemClicked: (Recipe) -> Unit,
     private val onButtonClicked: (Recipe, String) -> Unit
 ) : RecyclerView.Adapter<RecipeAdapter.ViewHolder>() {
@@ -50,4 +50,9 @@ class RecipeAdapter(
     }
 
     override fun getItemCount(): Int = recipes.size
+
+    fun updateRecipes(newRecipes: List<Recipe>) {
+        recipes = newRecipes
+        notifyDataSetChanged()
+    }
 }
