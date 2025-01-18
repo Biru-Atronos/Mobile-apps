@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
 
 class SignInActivity : AppCompatActivity() {
 
@@ -16,8 +17,8 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
     private lateinit var nextButton: MaterialButton
+    private lateinit var registered: MaterialTextView
     private lateinit var termsCheckbox: CheckBox
-
     private lateinit var credentialsManager: CredentialsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,18 +31,27 @@ class SignInActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordInput)
         nextButton = findViewById(R.id.nextButton)
         termsCheckbox = findViewById(R.id.termsCheckbox)
+        registered = findViewById(R.id.loginText)
+        credentialsManager = CredentialsManager(this)
 
-        credentialsManager = CredentialsManager()
+        registered.setOnClickListener {
+            val intent = Intent(this, RegisteredActivity::class.java)
+            startActivity(intent)
+        }
+
 
         nextButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
             if (validateCredentials(email, password)) {
-                if (credentialsManager.login(email, password)) {
+                if (email.equals("test@te.st", ignoreCase = true) && password == "1234") {
+
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
+                    finish()
                 } else {
+
                     showError("Invalid email or password. Please try again.")
                 }
             }
@@ -63,7 +73,6 @@ class SignInActivity : AppCompatActivity() {
         } else {
             passwordInputLayout.error = null
         }
-
         return isValid
     }
 

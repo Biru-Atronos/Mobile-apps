@@ -4,9 +4,6 @@ class CredentialsManagerTest {
 
     private lateinit var credentialsManager: CredentialsManager
 
-    fun setUp() {
-        credentialsManager = CredentialsManager()
-    }
 
     fun testEmptyEmail() {
         val email = ""
@@ -52,11 +49,13 @@ class CredentialsManagerTest {
     }
 
     fun runTests() {
-        setUp()
+
         testEmptyEmail()
         testWrongFormatEmail()
         testValidEmail()
         testEmptyPassword()
         testValidPassword()
     }
+
+
 }
