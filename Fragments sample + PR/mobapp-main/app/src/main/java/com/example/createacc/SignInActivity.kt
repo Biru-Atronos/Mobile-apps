@@ -39,19 +39,18 @@ class SignInActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         nextButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
             if (validateCredentials(email, password)) {
-                if (email.equals("test@te.st", ignoreCase = true) && password == "1234") {
-
+                if (credentialsManager.validateCredentials(email, password)) {
                     val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("email", email)
+                    intent.putExtra("password", password)
                     startActivity(intent)
                     finish()
                 } else {
-
                     showError("Invalid email or password. Please try again.")
                 }
             }
