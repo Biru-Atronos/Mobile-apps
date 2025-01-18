@@ -3,7 +3,10 @@ package com.example.createacc
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.createacc.fragments.LoginFragment
+import com.example.createacc.fragments.RecipeFragment
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,8 +18,14 @@ class MainActivity : AppCompatActivity() {
 
         credentialsManager = CredentialsManager(this)
 
-        if (savedInstanceState == null) {
-            showFragment(LoginFragment(credentialsManager))
+        lifecycleScope.launchWhenStarted {
+            credentialsManager.isLoggedIn.collect { loggedIn ->
+                if (loggedIn) {
+                    showFragment(RecipeFragment(credentialsManager))
+                } else {
+                    showFragment(LoginFragment(credentialsManager))
+                }
+            }
         }
     }
 

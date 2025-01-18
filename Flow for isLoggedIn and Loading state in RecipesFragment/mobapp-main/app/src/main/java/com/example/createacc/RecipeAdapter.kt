@@ -1,4 +1,4 @@
-package com.example.createacc.adapters
+package com.example.createacc
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.createacc.R
-import com.example.createacc.models.Recipe
+
 
 class RecipeAdapter(
     private var recipes: List<Recipe>,

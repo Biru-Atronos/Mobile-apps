@@ -3,11 +3,16 @@ package com.example.createacc
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Patterns
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class CredentialsManager(context: Context) {
 
-    private val sPreferences: SharedPreferences = context.getSharedPreferences("UserCredentials", Context.MODE_PRIVATE)
+    private val sPreferences: SharedPreferences =
+        context.getSharedPreferences("UserCredentials", Context.MODE_PRIVATE)
     private val map: MutableMap<String, String> = mutableMapOf()
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> get() = _isLoggedIn
 
     init {
         sPreferences.all.forEach { (key, value) ->
@@ -44,6 +49,17 @@ class CredentialsManager(context: Context) {
             editor.apply()
             return "Registration successful."
         }
+    }
+
+    fun login(email: String, password: String): Boolean {
+        val normalizedEmail = email.trim().lowercase()
+        val isValid = map[normalizedEmail] == password
+        _isLoggedIn.value = isValid
+        return isValid
+    }
+
+    fun logout() {
+        _isLoggedIn.value = false
     }
 
     fun validateCredentials(email: String, password: String): Boolean {

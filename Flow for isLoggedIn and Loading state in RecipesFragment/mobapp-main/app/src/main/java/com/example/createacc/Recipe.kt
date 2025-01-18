@@ -1,4 +1,5 @@
-package com.example.createacc.models
+package com.example.createacc
+
 
 data class Recipe(
     val id: Int,

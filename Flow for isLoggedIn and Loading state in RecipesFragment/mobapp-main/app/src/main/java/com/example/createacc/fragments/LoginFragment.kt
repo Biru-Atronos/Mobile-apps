@@ -34,12 +34,26 @@ class LoginFragment(private val credentialsManager: CredentialsManager) : Fragme
                 val email = emailEditText.text.toString().trim()
                 val password = passwordEditText.text.toString().trim()
 
-                if (validateCredentials(email, password, emailInputLayout, passwordInputLayout)) {
-                    if (credentialsManager.validateCredentials(email, password)) {
+                if (credentialsManager.validateCredentials(email, password)) {
+                    if (credentialsManager.login(email, password)) {
                         Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
-                        (activity as? MainActivity)?.showFragment(RecipeFragment())
+                        (activity as? MainActivity)?.showFragment(
+                            RecipeFragment(credentialsManager)
+                        )
                     } else {
                         showError("Invalid email or password. Please try again.")
+                    }
+                } else {
+                    if (email.isEmpty()) {
+                        emailInputLayout.error = "Email cannot be empty"
+                    } else {
+                        emailInputLayout.error = null
+                    }
+
+                    if (password.isEmpty()) {
+                        passwordInputLayout.error = "Password cannot be empty"
+                    } else {
+                        passwordInputLayout.error = null
                     }
                 }
             }
@@ -50,29 +64,6 @@ class LoginFragment(private val credentialsManager: CredentialsManager) : Fragme
         }
 
         return view
-    }
-
-    private fun validateCredentials(
-        email: String,
-        password: String,
-        emailInputLayout: TextInputLayout,
-        passwordInputLayout: TextInputLayout
-    ): Boolean {
-        var isValid = true
-        if (!credentialsManager.isValidEmail(email)) {
-            emailInputLayout.error = "Invalid email format"
-            isValid = false
-        } else {
-            emailInputLayout.error = null
-        }
-
-        if (password.isEmpty()) {
-            passwordInputLayout.error = "Password cannot be empty"
-            isValid = false
-        } else {
-            passwordInputLayout.error = null
-        }
-        return isValid
     }
 
     private fun showError(message: String) {
